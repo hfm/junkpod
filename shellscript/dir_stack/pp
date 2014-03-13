@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo $(pwd)
+pushd $HOME
+echo $(pwd)
+pushd program
+echo $(pwd)
+pushd junkpod
+echo $(pwd)
+popd
+echo $(pwd)
+popd
+echo $(pwd)
+popd
+echo $(pwd)
