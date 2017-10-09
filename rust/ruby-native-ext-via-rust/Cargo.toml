@@ -6,3 +6,6 @@ authors = ["OKUMURA Takahiro <hfm.garden@gmail.com>"]
 [lib]
 name = "rust"
 crate-type = ["dylib"]
+
+[dependencies]
+libc = "*"
