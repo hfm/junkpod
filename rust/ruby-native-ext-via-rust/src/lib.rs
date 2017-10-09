@@ -7,6 +7,7 @@ use std::ffi::CString;
 
 type VALUE = libc::c_ulong;
 
+#[link(name = "ruby")]
 extern "C" {
     static rb_cObject: VALUE;
     fn rb_define_class(name: *const libc::c_char, rb_super: VALUE) -> VALUE;
