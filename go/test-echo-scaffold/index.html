@@ -11,13 +11,13 @@
   <body>
     <div id="app">
       <el-main v-loading="loading">
-      <h2>My Tasks</h2>
-      <el-input placeholder="Please input your task" v-model="newTask" v-on:change="addTask()"></el-input>
-      <ul class="list-group">
-        <li class="list-group-item" v-for="task in tasks">
-          <el-checkbox :checked="task.done" v-on:change="doneTask(task)">{{ task.body }}</el-checkbox>
-        </li>
-      </ul>
+        <h2>My Tasks</h2>
+        <el-input placeholder="Please input your task" v-model="newTask" v-on:change="addTask()"></el-input>
+        <ul class="list-group">
+          <li class="list-group-item" v-for="task in tasks">
+            <el-checkbox :checked="task.done" v-on:change="doneTask(task)">{{ task.body }}</el-checkbox>
+          </li>
+        </ul>
       </el-main>
     </div>
     <script src="/static/app.js"></script>
