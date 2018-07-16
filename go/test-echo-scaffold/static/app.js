@@ -11,7 +11,7 @@ var app = new Vue({
     axios.get('/tasks')
       .then((response) => {
         console.log(response);
-        this.tasks = response.data.tiems || [];
+        this.tasks = response.data.items || [];
         this.loading = false;
       })
       .catch((error) => {
@@ -27,7 +27,6 @@ var app = new Vue({
       params.append('done', false);
       axios.post('/tasks', params)
         .then((response) => {
-          this.loading = false;
           this.tasks.unshift(response.data);
           this.newTask = "";
           this.loading = false;
@@ -43,7 +42,7 @@ var app = new Vue({
       params.append('done', !task.done);
       axios.put('/tasks/' + task.id, params)
         .then((response) => {
-          console.log(response)
+          console.log(response);
           this.loading = false;
         })
         .catch((error) => {
