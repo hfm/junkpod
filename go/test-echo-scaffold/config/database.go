@@ -1,97 +1,52 @@
 package config
 
 import (
-	"crypto/tls"
+	"fmt"
 	"log"
-	"net"
-	"net/url"
 	"os"
 
-	"github.com/globalsign/mgo"
+	"database/sql"
+	// sqlite3 driver
+	_ "github.com/mattn/go-sqlite3"
 )
 
-var mongodbSession *mgo.Session
 var (
 	dbPrefix = "test-echo-scaffold"
 )
 
-// DBSession returns the current db session.
-func DBSession() *mgo.Session {
-	if mongodbSession != nil {
-		return mongodbSession
+// InitDB returns the current db session.
+func InitDB() (*sql.DB) {
+	path := os.Getenv("DB_PATH")
+	if path == "" {
+		path = "sqlite3"
 	}
 
-	uri := os.Getenv("MONGODB_URI")
-	if uri == "" {
-		uri = "mongodb://localhost"
-	}
-
-	sslmode := false
-	hostname := ""
-	if url, err := url.Parse(uri); err == nil {
-		hostname = url.Hostname()
-		values := url.Query()
-		if ssl := values.Get("ssl"); ssl != "" {
-			if ssl == "true" {
-				sslmode = true
-			}
-			values.Del("ssl")
-			url.RawQuery = values.Encode()
-			uri = url.String()
-		}
-	}
-
-	di, err := mgo.ParseURL(uri)
+	db, err := sql.Open("sqlite3", path)
 	if err != nil {
-		log.Fatalf("Can't parse mongo uri, go error %v\n", err)
-	}
-	if sslmode {
-		di.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
-			conn, err := tls.Dial("tcp", addr.TCPAddr().String(), &tls.Config{
-				ServerName: hostname,
-			})
-			if err != nil {
-				log.Println(err)
-			}
-			return conn, err
-		}
-	}
-	mongodbSession, err = mgo.DialWithInfo(di)
-	if mongodbSession == nil || err != nil {
-		log.Fatalf("Can't connect to mongo, go error %v\n", err)
+		log.Fatalf("Cannot open Database: %s", err)
+		return nil
 	}
 
-	mongodbSession.SetSafe(&mgo.Safe{})
-	return mongodbSession
+	return db
 }
 
-// DB returns a database given a name.
-func DB(name string) *mgo.Database {
-	return DBSession().DB(name)
-}
+func setup(db *sql.DB) error {
+	sql := `
+	CREATE TABLE IF NOT EXISTS tasks(
+		id INTEGER NOT NULL PRIMARY KEY,
+		body TEXT NOT NULL,
+		done INTEGER NOT NULL DEFAULT 0,
+		created_ad INTEGER NOT NULL,
+		updated_at INTEGER,
+	)
+	`
 
-// DefaultDB returns the default database.
-func DefaultDB() *mgo.Database {
-	switch Environment {
-	case "test":
-		{
-			return DB(dbPrefix + "-test")
-		}
-	case "production":
-		{
-			return DB(dbPrefix + "-production")
-		}
+	_, err:= db.Exec(sql)
+	if err != nil {
+		return fmt.Errorf("Cannot exec query: %s", err)
 	}
 
-	return DB(dbPrefix + "-development")
-}
-
-// AddBasicIndex add a ascending index given a list of `keys`. The index is always built in background.
-func AddBasicIndex(collection *mgo.Collection, keys ...string) {
-	collection.EnsureIndex(mgo.Index{
-		Key:        keys,
-		Background: true,
-	})
+	return nil
 }
 
 // vi:syntax=go
