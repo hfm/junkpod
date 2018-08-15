@@ -1,4 +1,4 @@
-MRuby::Build.new('bench') do |conf|
+MRuby::Build.new do |conf|
   toolchain :gcc
   conf.cc.flags << '-O3'
 
