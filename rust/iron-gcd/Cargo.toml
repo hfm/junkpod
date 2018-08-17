@@ -4,3 +4,7 @@ version = "0.1.0"
 authors = ["OKUMURA Takahiro <hfm.garden@gmail.com>"]
 
 [dependencies]
+iron = "*"
+mime = "0.2.6"
+router = "*"
+urlencoded = "*"
