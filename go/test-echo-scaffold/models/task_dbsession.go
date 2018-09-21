@@ -1,8 +1,7 @@
 package models
 
 import (
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
+	"database/sql"
 	"github.com/hfm/junkpod/go/test-echo-scaffold/config"
 )
 
@@ -13,12 +12,12 @@ var (
 
 // TaskDBSession handles the connections to the database
 type TaskDBSession struct {
-	backend *mgo.Session
+	backend *sql.DB
 }
 
 // NewTaskDBSession creates a new database session.
 func NewTaskDBSession() *TaskDBSession {
-	return &TaskDBSession{backend: config.DBSession().Copy()}
+	return &TaskDBSession{backend: config.InitDB()}
 }
 
 // Close closes the database session.
@@ -37,7 +36,7 @@ func (dbSession *TaskDBSession) Update(task *Task) error {
 }
 
 // Query creates a query
-func (dbSession *TaskDBSession) Query(query bson.M) *mgo.Query {
+func (dbSession *TaskDBSession) Query(query bson.M) *sql.Rows {
 	criteria := dbSession.collection().Find(query).Limit(MaxTasksToFetch)
 
 	return criteria
@@ -54,11 +53,11 @@ func (dbSession *TaskDBSession) DeleteAll(query bson.M) (int, error) {
 	return info.Removed, err
 }
 
-func (dbSession *TaskDBSession) database() *mgo.Database {
+func (dbSession *TaskDBSession) database() *sql.Database {
 	return dbSession.backend.DB(config.DefaultDBName)
 }
 
-func (dbSession *TaskDBSession) collection() *mgo.Collection {
+func (dbSession *TaskDBSession) collection() *sql.Collection {
 	return dbSession.database().C("tasks")
 }
 
