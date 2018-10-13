@@ -23,3 +23,9 @@ var vm = new Vue({
     items: items
   }
 });
+
+vm.$watch(function () {
+  return this.items[0].quantity
+}, function (quantity) {
+  console.log(quantity)
+})
