@@ -5,9 +5,19 @@
 
 <div id="app">
   <p>
-    {{ items[0].name }}
+  {{ items[0].name }}: {{ items[0].price }} x {{ items[0].quantity }}
   </p>
+
+<button id="b-button" v-bind:title="loggedInButton">購入</button>
 </div>
 
 <script src="app.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#b-button',
+    data: {
+      loggedInButton: 'ログイン済のため購入できます。'
+    }
+  })
+</script>
 </html>
