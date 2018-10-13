@@ -8,7 +8,7 @@
   {{ items[0].name }}: {{ items[0].price }} x {{ items[0].quantity }}
   </p>
 
-<button id="b-button" v-bind:title="loggedInButton">購入</button>
+<button id="b-button" v-bind:disabled="!canBuy">購入</button>
 </div>
 
 <script src="app.js"></script>
@@ -16,7 +16,7 @@
   var vm = new Vue({
     el: '#b-button',
     data: {
-      loggedInButton: 'ログイン済のため購入できます。'
+      canBuy: false
     }
   })
 </script>
