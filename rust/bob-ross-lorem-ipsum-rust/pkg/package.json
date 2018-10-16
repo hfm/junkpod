@@ -1,0 +1,15 @@
+{
+  "name": "bob-ross-lorem-ipsum-rust",
+  "collaborators": [
+    "OKUMURA Takahiro <hfm.garden@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "bob_ross_lorem_ipsum_rust_bg.wasm",
+    "bob_ross_lorem_ipsum_rust.js",
+    "bob_ross_lorem_ipsum_rust.d.ts"
+  ],
+  "module": "bob_ross_lorem_ipsum_rust.js",
+  "types": "bob_ross_lorem_ipsum_rust.d.ts",
+  "sideEffects": "false"
+}
