@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<title>はじめてのVue.js</title>
+<script src="https://unpkg.com/vue@2.5.17"></script>
+
+<div id="app">
+  <p>
+  {{ items[0].name }}: {{ items[0].price }} x {{ items[0].quantity }}
+  </p>
+  <p>小計: {{ totalPrice | numberWithDelimiter }}円</p>
+  <p>合計(税込): {{ totalPriceWithTax | numberWithDelimiter }}円</p>
+
+<button id="b-button" v-bind:disabled="!canBuy">購入</button>
+</div>
+
+<script src="app.js"></script>
+<script>
+  var va = new Vue({
+    el: '#b-button',
+    data: {
+      canBuy: false
+    }
+  })
+</script>
+</html>
