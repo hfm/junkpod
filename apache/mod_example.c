@@ -23,5 +23,6 @@ static void register_hooks(apr_pool_t *pool)
 
 static int example_handler(request_rec *r)
 {
-    return HTTP_NOT_FOUND;
+    ap_rprintf(r, "Hello, %s!", r->useragent_ip);
+    return OK;
 }
