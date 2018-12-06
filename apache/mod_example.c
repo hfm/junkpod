@@ -27,6 +27,17 @@ static void register_hooks(apr_pool_t *pool)
 
 static int example_handler(request_rec *r)
 {
+    int rc, exists;
+    apr_finfo_t finfo;
+    apr_file_t *file;
+    char *filename;
+    char buffer[256];
+    apr_size_t readBytes;
+    int n;
+    apr_table_t *GET;
+    apr_array_header_t *POST;
+    const char *digestType;
+
     const char *original = "You can't edit this!";
     char *copy;
     int *integers;
